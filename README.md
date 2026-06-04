@@ -14,10 +14,10 @@ A Strapi 5 plugin that finds and manages duplicate entries across all your conte
 - **Auto-cleanup** — deleted-entry records older than 1 day are automatically removed
 - **Export** — download the Master Report as CSV, Excel (SpreadsheetML .xls), or PDF (print view)
 
-## Installation
+## Clone the repository
 
 ```bash
-npm install duplicate-analyzer
+git clone https://github.com/sahrawataditya/strapi-duplicate-analyzer.git
 ```
 
 Then build or restart your Strapi project:
