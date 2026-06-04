@@ -20,6 +20,15 @@ A Strapi 5 plugin that finds and manages duplicate entries across all your conte
 git clone https://github.com/sahrawataditya/strapi-duplicate-analyzer.git
 ```
 
+Install the all dependencies:
+```bash
+npm install
+# or
+yarn install
+#or
+pnpm install
+```
+
 Then build or restart your Strapi project:
 
 ```bash
