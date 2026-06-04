@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "duplicate_analyzer_deleted_entries",
+  "info": {
+    "singularName": "deleted-entry",
+    "pluralName": "deleted-entries",
+    "displayName": "Deleted Entry",
+    "description": "Log of deleted entries for restore functionality"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "pluginOptions": {
+    "content-manager": {
+      "visible": false
+    },
+    "content-type-builder": {
+      "visible": false
+    }
+  },
+  "attributes": {
+    "contentType": {
+      "type": "string",
+      "required": true
+    },
+    "entryId": {
+      "type": "string",
+      "required": true
+    },
+    "entryData": {
+      "type": "json",
+      "required": true
+    },
+    "deletedAt": {
+      "type": "datetime",
+      "required": true
+    }
+  }
+}

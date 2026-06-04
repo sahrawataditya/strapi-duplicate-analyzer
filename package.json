@@ -1,0 +1,79 @@
+{
+  "version": "1.0.0",
+  "keywords": [
+    "strapi",
+    "plugin",
+    "duplicate",
+    "content",
+    "analyzer"
+  ],
+  "type": "commonjs",
+  "exports": {
+    "./package.json": "./package.json",
+    "./strapi-admin": {
+      "types": "./dist/admin/src/index.d.ts",
+      "source": "./admin/src/index.ts",
+      "import": "./dist/admin/index.mjs",
+      "require": "./dist/admin/index.js",
+      "default": "./dist/admin/index.js"
+    },
+    "./strapi-server": {
+      "types": "./dist/server/src/index.d.ts",
+      "source": "./server/src/index.ts",
+      "import": "./dist/server/index.mjs",
+      "require": "./dist/server/index.js",
+      "default": "./dist/server/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "strapi-plugin build",
+    "watch": "strapi-plugin watch",
+    "watch:link": "strapi-plugin watch:link",
+    "verify": "strapi-plugin verify",
+    "test:ts:front": "tsc -p admin/tsconfig.json",
+    "test:ts:back": "tsc -p server/tsconfig.json"
+  },
+  "dependencies": {
+    "@rollup/rollup-win32-x64-msvc": "^4.61.0"
+  },
+  "devDependencies": {
+    "@strapi/design-system": "^2.2.0",
+    "@strapi/icons": "^2.2.0",
+    "@strapi/sdk-plugin": "^6.1.0",
+    "@strapi/strapi": "^5.47.0",
+    "@strapi/typescript-utils": "^5.47.0",
+    "@types/react": "^18.3.30",
+    "@types/react-dom": "^18.3.7",
+    "prettier": "^3.8.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-intl": "^6.8.9",
+    "react-router-dom": "^6.30.4",
+    "styled-components": "^6.4.2",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "@strapi/design-system": "^2.2.0",
+    "@strapi/icons": "^2.2.0",
+    "@strapi/sdk-plugin": "^6.1.0",
+    "@strapi/strapi": "^5.47.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-intl": "^6.8.9",
+    "react-router-dom": "^6.30.4",
+    "styled-components": "^6.4.2"
+  },
+  "strapi": {
+    "kind": "plugin",
+    "name": "duplicate-analyzer",
+    "displayName": "Duplicate Analyzer",
+    "description": "Find and manage duplicate entries across all content types. Search by exact field match, delete duplicates with restore capability."
+  },
+  "name": "duplicate-analyzer",
+  "description": "Find and manage duplicate entries across all content types. Search by exact field match, delete duplicates with restore capability.",
+  "license": "MIT",
+  "author": "byteboss <adityasahrawat985@gmail.com>"
+}
