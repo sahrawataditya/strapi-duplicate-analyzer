@@ -16,6 +16,8 @@ A Strapi 5 plugin that finds and manages duplicate entries across all your conte
 
 ## Clone the repository
 
+### Via npm
+
 ```bash
 git clone https://github.com/sahrawataditya/strapi-duplicate-analyzer.git
 ```
@@ -37,30 +39,111 @@ npm run build
 npm run develop
 ```
 
+### Manual copy into a Strapi project
+
+If you want to use the plugin from source (e.g., for local development, private use, or offline environments):
+
+**Option A — Link (recommended for development)**
+
+```bash
+# 1. In the plugin directory, build and watch for changes
+cd duplicate-analyzer
+npm install
+npm run watch:link
+
+# 2. In your Strapi project directory, start the dev server
+cd my-strapi-project
+npm run develop
+```
+
+The plugin auto-rebuilds when you make changes. Both `watch:link` and `develop` must run simultaneously.
+
+**Option B — Manual copy**
+
+```bash
+# 1. Build the plugin
+cd duplicate-analyzer
+npm install
+npm run build
+
+# 2. Copy the built plugin into your Strapi project
+cp -r dist my-strapi-project/node_modules/duplicate-analyzer/dist
+
+# Or copy the entire folder into src/plugins/ if using local plugin config:
+cp -r .. my-strapi-project/src/plugins/duplicate-analyzer
+```
+
+Then rebuild your Strapi project:
+
+```bash
+cd my-strapi-project
+npm run build
+```
+
 ## Usage
 
-The plugin adds a "Duplicate Analyzer" section in your Strapi admin sidebar.
+The plugin adds a **Duplicate Analyzer** section in your Strapi admin sidebar with three tabs.
 
 ### Duplicates Tab
+
+Scan individual content types for duplicates on a specific field.
 
 1. Select a **Content Type** from the dropdown
 2. Select a **Field** to scan (only searchable fields are shown: string, text, email, uid, integer, biginteger, float, decimal)
 3. If the content type is localized, optionally pick a **Locale** (defaults to all locales)
 4. Click **Find Duplicates**
 
-Each result row shows a duplicate value, the number of entries sharing it, and actions. Click **View N** to expand the group and see individual entries with checkboxes, preview links, and delete buttons.
+Each result row shows a duplicate value, the number of entries sharing it, and actions. Click **View N** to expand the group and see individual entries.
+
+#### Batch Delete
+
+Within an expanded group:
+
+1. Check the checkbox next to each entry you want to remove
+2. Click **Delete (N)** to delete all selected entries at once
+
+Entries are saved to the Deleted Entries log and can be restored later.
+
+#### Keep Newest
+
+To delete all older entries in a group while preserving the newest one, use the **Delete Older** button on the group row (available in the Duplicates tab).
 
 ### Master Report Tab
 
-Click **Scan All Content Types** to generate a site-wide report. The summary bar shows how many content types, fields, and locales were scanned, plus the total duplicate groups and entries found.
+Click **Scan All Content Types** to generate a site-wide report. The plugin scans every collection type, every searchable field, and (for localized types) every locale.
 
-The table groups results by content type and field. Use the **CSV**, **Excel**, or **PDF** buttons to export the full report.
+The summary bar shows:
+- Number of content types scanned
+- Number of fields scanned
+- Number of locales scanned (if i18n is enabled)
+- Total duplicate groups and entries found
+
+The table groups results by content type and field with pagination. Expand a row to see individual entries with checkboxes for batch delete.
+
+**Exporting**
+
+Use the buttons above the table to export:
+
+- **CSV** — UTF-8 encoded CSV with BOM (works with Excel, Google Sheets)
+- **Excel** — SpreadsheetML format (.xls)
+- **PDF** — opens a print view in a new tab (use browser's Save as PDF)
 
 ### Deleted Entries Tab
 
-Lists all entries that were deleted through the plugin. Each entry can be **Restored** — this recreates the original entry with all components, media, relations, publication status, and locale preserved.
+Lists all entries that were deleted through the plugin (auto-cleaned after 24 hours).
 
-Old deleted-entry records are automatically cleaned up after 24 hours.
+Each entry shows:
+- Original content type
+- Entry document ID
+- Deletion timestamp
+
+Click **Restore** to recreate the entry. The restore process preserves:
+- All field values
+- Components and dynamic zones
+- Media relations (images, files)
+- Content relations
+- Publication status (published / draft)
+- Locale
 
 ## Locale Support
 
@@ -68,6 +151,22 @@ Old deleted-entry records are automatically cleaned up after 24 hours.
 - The **Master Report** automatically detects all configured locales and scans each one independently, so duplicates in English and French are reported separately
 - The Locale column in the Master Report shows which locale each duplicate group belongs to
 - Restored entries are recreated in their original locale
+
+## Admin API
+
+The plugin exposes the following admin API endpoints (prefixed with `/duplicate-analyzer`):
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/content-types` | List all collection types with i18n info |
+| `GET` | `/content-types/:uid/fields` | List searchable fields for a content type |
+| `GET` | `/locales` | List configured i18n locales |
+| `POST` | `/duplicates/find` | Find duplicates for a CT + field (body: `{ uid, field, page, pageSize, locale }`) |
+| `POST` | `/duplicates/scan` | Master scan across all CTs (body: `{ page, pageSize }`) |
+| `POST` | `/duplicates/delete` | Delete a single entry (body: `{ uid, documentId, locale }`) |
+| `POST` | `/duplicates/delete-older` | Delete older entries in a group (body: `{ uid, field, value, locale }`) |
+| `POST` | `/duplicates/restore` | Restore a deleted entry (body: `{ deletedEntryId }`) |
+| `GET` | `/duplicates/deleted` | List deleted entries (query: `?page=&pageSize=`) |
 
 ## Development
 
