@@ -37,7 +37,9 @@
     "test:ts:back": "tsc -p server/tsconfig.json"
   },
   "dependencies": {
-    "@rollup/rollup-win32-x64-msvc": "^4.61.0"
+    "@rollup/rollup-win32-x64-msvc": "^4.61.0",
+    "dotenv": "^8.2.0",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@strapi/design-system": "^2.2.0",
